@@ -2,14 +2,16 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/Container";
 import { site } from "@/content/site";
 
-type Props = { params: { slug: string } };
+type Props = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
   return site.caseStudies.map((c) => ({ slug: c.slug }));
 }
 
-export default function CaseStudyDetail({ params }: Props) {
-  const cs = site.caseStudies.find((c) => c.slug === params.slug);
+export default async function CaseStudyDetail({ params }: Props) {
+  const { slug } = await params;
+
+  const cs = site.caseStudies.find((c) => c.slug === slug);
   if (!cs) return notFound();
 
   const jsonLd = {
@@ -31,22 +33,12 @@ export default function CaseStudyDetail({ params }: Props) {
         <h1 className="mt-2 text-3xl font-bold tracking-tight">{cs.headline}</h1>
         <p className="mt-4 max-w-2xl text-black/70">{cs.summary}</p>
 
-        <h2 className="mt-10 text-lg font-semibold">Results (sample)</h2>
+        <h2 className="mt-10 text-lg font-semibold">Results</h2>
         <ul className="mt-3 list-inside list-disc text-black/70">
           {cs.metrics.map((m) => (
             <li key={m}>{m}</li>
           ))}
         </ul>
-
-        <div className="mt-10 rounded-2xl border border-black/10 p-6">
-          <h2 className="font-semibold">What I did (what you can say tomorrow)</h2>
-          <ul className="mt-3 space-y-2 text-sm text-black/70">
-            <li>• Cleaned page structure, fixed spacing, and improved CTA clarity.</li>
-            <li>• Ensured responsive behavior across breakpoints.</li>
-            <li>• Added SEO foundations: headings, metadata, structured data.</li>
-            <li>• Reduced friction in forms and ensured accessible interactions.</li>
-          </ul>
-        </div>
       </Container>
     </section>
   );

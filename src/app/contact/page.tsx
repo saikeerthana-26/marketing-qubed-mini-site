@@ -16,7 +16,7 @@ export default function ContactPage() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           <form
             className="rounded-2xl border border-black/10 p-6"
-            onSubmit={(e) => e.preventDefault()}
+           
           >
             <label className="block text-sm font-semibold">Name</label>
             <input

@@ -1,64 +1,124 @@
+import Link from "next/link";
 import { Container } from "@/components/Container";
-import { Button } from "@/components/Button";
+import { Card, CardBody } from "@/components/Card";
+import { Badge } from "@/components/Badge";
+import { SectionTitle } from "@/components/SectionTitle";
 import { site } from "@/content/site";
 
 export default function HomePage() {
   return (
     <div>
-      <section className="py-14 sm:py-20">
+      
+
+      <section className="py-24">
         <Container>
-          <div className="grid gap-10 sm:grid-cols-2 sm:items-center">
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-sm font-semibold text-black/60">
-                Fast • Responsive • SEO-ready
-              </p>
-              <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
-                A clean agency website demo built to showcase CMS + web skills
+              <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight">
+                Websites that convert, perform, and scale.
               </h1>
-              <p className="mt-4 text-lg text-black/70">
-                Built in Next.js with a CMS-like content structure, case studies, and a
-                contact flow. Easy to translate to WordPress/Wix/Shopify section builds.
+
+              <p className="mt-6 max-w-xl text-neutral-600 leading-relaxed">
+                I build responsive marketing websites with strong UX and solid SEO foundations —
+                the kind agencies can confidently ship to clients.
               </p>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Button href="/case-studies">View Case Studies</Button>
-                <Button href="/services" variant="ghost">
+
+              
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  href="/case-studies"
+                  className="rounded-xl bg-black px-6 py-3 text-sm font-semibold text-white hover:bg-black/90"
+                >
+                  View Work
+                </Link>
+
+                <Link
+                  href="/services"
+                  className="rounded-xl border border-neutral-300 px-6 py-3 text-sm font-semibold hover:bg-black/5"
+                >
                   Services
-                </Button>
-              </div>
-              <div className="mt-6 text-sm text-black/60">
-                Location-ready: {site.location} • Hybrid-friendly • Detail-oriented
+                </Link>
+
+                <Link
+                  href="/contact"
+                  className="rounded-xl bg-black/5 px-6 py-3 text-sm font-semibold hover:bg-black/10"
+                >
+                  Contact
+                </Link>
               </div>
             </div>
 
-            <div className="rounded-2xl border border-black/10 p-6 shadow-sm">
-              <h2 className="text-lg font-semibold">What this demonstrates</h2>
-              <ul className="mt-3 space-y-2 text-sm text-black/70">
-                <li>• Responsive layout + clean components</li>
-                <li>• SEO basics: metadata + structured data</li>
-                <li>• CMS-like content file (easy editing)</li>
-                <li>• Process mindset (quality + iteration)</li>
+            <div className="rounded-2xl border border-neutral-200 p-8">
+              <p className="text-sm text-neutral-500">Recent Work Snapshot</p>
+
+              <ul className="mt-6 space-y-4 text-neutral-700">
+                <li className="flex justify-between">
+                  <span>Mobile-first optimization</span>
+                  <span>✔</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>SEO structure</span>
+                  <span>✔</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>Clean page architecture</span>
+                  <span>✔</span>
+                </li>
               </ul>
-              <div className="mt-6 rounded-xl bg-black/5 p-4">
-                <p className="text-sm font-semibold">Quick pitch for interview:</p>
-                <p className="mt-1 text-sm text-black/70">
-                  “I build fast, responsive sites with strong SEO foundations, and I’m
-                  comfortable shipping in CMS environments while keeping quality high.”
-                </p>
-              </div>
             </div>
           </div>
         </Container>
       </section>
 
+      {/* SERVICES */}
       <section className="border-t border-black/10 py-14">
         <Container>
-          <h2 className="text-2xl font-bold tracking-tight">Services</h2>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <SectionTitle
+            eyebrow="What I do"
+            title="CMS builds, responsive UI, and fast iteration"
+            desc="A clean approach that matches agency workflows: build sections, validate on mobile, optimize, and ship."
+          />
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {site.services.map((s) => (
-              <div key={s.title} className="rounded-2xl border border-black/10 p-6">
-                <h3 className="font-semibold">{s.title}</h3>
-                <p className="mt-2 text-sm text-black/70">{s.desc}</p>
-              </div>
+              <Card key={s.title}>
+                <CardBody>
+                  <h3 className="text-base font-semibold">{s.title}</h3>
+                  <p className="mt-2 text-sm text-black/70">{s.desc}</p>
+                </CardBody>
+              </Card>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* FEATURED CASE STUDIES */}
+      <section className="border-t border-black/10 py-14">
+        <Container>
+          <SectionTitle
+            eyebrow="Work"
+            title="Outcome-focused case studies"
+            desc="Short, metric-first writeups that show how you think about results."
+          />
+
+          <div className="mt-8 grid gap-4 lg:grid-cols-2">
+            {site.caseStudies.map((c) => (
+              <Link
+                key={c.slug}
+                href={`/case-studies/${c.slug}`}
+                className="group rounded-2xl border border-black/10 bg-white p-6 transition hover:bg-black/5"
+              >
+                <div className="text-xs font-semibold text-black/50">{c.client}</div>
+                <div className="mt-2 text-lg font-semibold group-hover:underline">
+                  {c.headline}
+                </div>
+                <p className="mt-2 text-sm text-black/70">{c.summary}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {c.metrics.map((m) => (
+                    <Badge key={m}>{m}</Badge>
+                  ))}
+                </div>
+              </Link>
             ))}
           </div>
         </Container>
